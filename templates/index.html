@@ -386,10 +386,10 @@
 
         <div id="result" class="result" style="display: none;">
             <h2 id="decisionText"></h2>
-            <p id="confidenceText"></p>
+            <!-- <p id="confidenceText"></p>
             <div class="confidence-meter">
                 <div id="confidenceFill" class="confidence-fill"></div>
-            </div>
+            </div> -->
             <p id="errorText" style="color: var(--danger);"></p>
         </div>
 
@@ -447,10 +447,10 @@
                 document.getElementById('decisionText').textContent =
                     decision === 'Approved' ? '🎉 Loan Approved!' : '⚠️ Loan Not Approved';
 
-                document.getElementById('confidenceText').textContent =
-                    `Confidence: ${confidence}%`;
+                // document.getElementById('confidenceText').textContent =
+                //     `Confidence: ${confidence}%`;
 
-                confidenceFill.style.width = `${confidence}%`;
+                // confidenceFill.style.width = `${confidence}%`;
 
                 result.className = 'result ' + (decision === 'Approved' ? 'approved' : 'rejected');
                 result.style.display = 'block';
