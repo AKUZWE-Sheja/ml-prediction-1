@@ -1,3 +1,5 @@
+# USED WHEN I WAS HANDLING REACTJs BUT SINCE THE CORS ISSUES PERSISTED, I DECIDED TO KEEP THIS FOR FUTURE IMPROVEMENTS AND USE HTML
+
 import numpy as np
 from flask import Flask, request, jsonify
 from flask_cors import CORS

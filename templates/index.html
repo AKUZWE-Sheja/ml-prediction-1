@@ -6,32 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loan Approval Predictor</title>
     <script src="https://cdn.plot.ly/plotly-2.18.2.min.js"></script>
-    <!DOCTYPE html>
-    <html lang="en">
-    
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Loan Approval Predictor</title>
-        <!-- Using specific Plotly version to avoid warning -->
-        <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                line-height: 1.6;
-                margin: 0;
-                padding: 20px;
-                background-color: #f5f5f5;
-            }
-    
-            .container {
-                max-width: 800px;
-                margin: 0 auto;
-                background: white;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
         h1 {
             color: #2c3e50;
@@ -101,7 +92,7 @@
 
         .graph-container {
             margin-top: 30px;
-            height: 400px;
+            height: 500px;
         }
 
         .loading {
@@ -110,176 +101,179 @@
             color: #7f8c8d;
         }
     </style>
-    </head>
-        </style>
-    </head>
-    
-    <body>
-        <div class="container">
-            <h1>Loan Approval Predictor</h1>
-    
-            <div class="form-group">
-                <label for="Principal">Loan Amount ($)</label>
-                <input type="number" id="Principal" min="500" max="5000" value="1000" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="terms">Loan Term (days)</label>
-                <input type="number" id="terms" min="7" max="365" value="30" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="age">Borrower Age</label>
-                <input type="number" id="age" min="18" max="100" value="35" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="education">Education Level</label>
-                <select id="education" required>
-                    <option value="High_School_or_Below">High School or Below</option>
-                    <option value="Bachelor" selected>Bachelor</option>
-                    <option value="Master_or_Above">Master or Above</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="Gender">Gender</label>
-                <select id="Gender" required>
-                    <option value="male" selected>Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
-    
-            <button id="submitBtn" onclick="predictLoan()">Check Eligibility</button>
-    
-            <div id="loading" class="loading" style="display: none;">
-                <p>Processing your request...</p>
-                <div class="spinner"></div>
-            </div>
-    
-            <div id="result" class="result" style="display: none;">
-                <h2 id="decisionText"></h2>
-                <p id="confidenceText"></p>
-                <p id="errorText" style="color: #dc3545;"></p>
-            </div>
-    
-            <div id="principalGraph" class="graph-container"></div>
-            <div id="ageGraph" class="graph-container"></div>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Loan Approval Predictor</h1>
+
+        <div class="form-group">
+            <label for="Principal">Loan Amount ($)</label>
+            <input type="number" id="Principal" min="500" max="5000" value="1000" required>
         </div>
-    
-        <script>
-            async function predictLoan() {
-                const btn = document.getElementById('submitBtn');
-                const loading = document.getElementById('loading');
-                const result = document.getElementById('result');
-                const errorText = document.getElementById('errorText');
 
-                // Reset UI
-                btn.disabled = true;
-                loading.style.display = 'block';
-                result.style.display = 'none';
-                errorText.textContent = '';
+        <div class="form-group">
+            <label for="terms">Loan Term (days)</label>
+            <input type="number" id="terms" min="7" max="365" value="30" required>
+        </div>
 
-                // Get form values
-                const formData = {
-                    Principal: parseInt(document.getElementById('Principal').value),
-                    terms: parseInt(document.getElementById('terms').value),
-                    age: parseInt(document.getElementById('age').value),
-                    education: document.getElementById('education').value,
-                    Gender: document.getElementById('Gender').value
-                };
+        <div class="form-group">
+            <label for="age">Borrower Age</label>
+            <input type="number" id="age" min="18" max="100" value="35" required>
+        </div>
 
-                try {
-                    // Make prediction request
-                    const predictionResponse = await fetch('http://localhost:5000/predict', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(formData)
-                    });
+        <div class="form-group">
+            <label for="education">Education Level</label>
+            <select id="education" required>
+                <option value="High_School_or_Below">High School or Below</option>
+                <option value="Bachelor" selected>Bachelor</option>
+                <option value="Master_or_Above">Master or Above</option>
+            </select>
+        </div>
 
-                    if (!predictionResponse.ok) {
-                        const errorData = await predictionResponse.json().catch(() => ({}));
-                        throw new Error(errorData.error || 'Prediction request failed');
-                    }
+        <div class="form-group">
+            <label for="Gender">Gender</label>
+            <select id="Gender" required>
+                <option value="male" selected>Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
 
-                    const predictionData = await predictionResponse.json();
+        <button id="submitBtn" onclick="predictLoan()">Check Eligibility</button>
 
-                    // Display results
-                    document.getElementById('decisionText').textContent = `Decision: ${predictionData.prediction}`;
-                    document.getElementById('confidenceText').textContent = `Confidence: ${(predictionData.probability * 100).toFixed(1)}%`;
-                    result.className = 'result ' + (predictionData.prediction === 'Approved' ? 'approved' : 'rejected');
-                    result.style.display = 'block';
+        <div id="loading" class="loading" style="display: none;">
+            <p>Processing your request...</p>
+            <div class="spinner"></div>
+        </div>
 
-                    // Get graph data
-                    const graphsResponse = await fetch('http://localhost:5000/compute_graphs', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(formData)
-                    });
+        <div id="result" class="result" style="display: none;">
+            <h2 id="decisionText"></h2>
+            <p id="confidenceText"></p>
+            <p id="errorText" style="color: #dc3545;"></p>
+        </div>
 
-                    if (!graphsResponse.ok) {
-                        const errorData = await graphsResponse.json().catch(() => ({}));
-                        throw new Error(errorData.error || 'Failed to load graph data');
-                    }
+        <div id="featureImportanceGraph" class="graph-container"></div>
+    </div>
 
-                    const graphsData = await graphsResponse.json();
+    <script>
+        async function predictLoan() {
+            const btn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            const errorText = document.getElementById('errorText');
 
-                    // Draw graphs
-                    drawGraph(
-                        'principalGraph',
-                        'Approval Probability by Loan Amount',
-                        graphsData.principal_graph.x,
-                        graphsData.principal_graph.y,
-                        'Principal ($)'
-                    );
+            // Reset UI
+            btn.disabled = true;
+            loading.style.display = 'block';
+            result.style.display = 'none';
+            errorText.textContent = '';
 
-                    drawGraph(
-                        'ageGraph',
-                        'Approval Probability by Age',
-                        graphsData.age_graph.x,
-                        graphsData.age_graph.y,
-                        'Age'
-                    );
+            // Get form values
+            const formData = {
+                Principal: parseInt(document.getElementById('Principal').value),
+                terms: parseInt(document.getElementById('terms').value),
+                age: parseInt(document.getElementById('age').value),
+                education: document.getElementById('education').value,
+                Gender: document.getElementById('Gender').value
+            };
 
-                } catch (error) {
-                    console.error('Error:', error);
-                    errorText.textContent = error.message;
-                    result.className = 'result error';
-                    result.style.display = 'block';
-                } finally {
-                    loading.style.display = 'none';
-                    btn.disabled = false;
-                }
-            }
-
-            function drawGraph(containerId, title, xValues, yValues, xTitle) {
-                const trace = {
-                    x: xValues,
-                    y: yValues,
-                    type: 'scatter',
-                    mode: 'lines+markers',
-                    line: { shape: 'spline', color: '#3498db' },
-                    marker: { color: '#2980b9' }
-                };
-
-                const layout = {
-                    title: title,
-                    xaxis: { title: xTitle },
-                    yaxis: {
-                        title: 'Approval Probability',
-                        range: [0, 1],
-                        tickformat: ',.0%'
+            try {
+                // Make prediction request
+                const predictionResponse = await fetch('http://localhost:5000/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
                     },
-                    height: 400
-                };
+                    body: JSON.stringify(formData)
+                });
 
-                Plotly.newPlot(containerId, [trace], layout);
+                if (!predictionResponse.ok) {
+                    const errorData = await predictionResponse.json().catch(() => ({}));
+                    throw new Error(errorData.error || 'Prediction request failed');
+                }
+
+                const predictionData = await predictionResponse.json();
+
+                // In the predictLoan() function, replace the results display with:
+                document.getElementById('decisionText').textContent = `Decision: ${predictionData.prediction}`;
+                document.getElementById('confidenceText').textContent = `Confidence: ${(predictionData.probability * 100).toFixed(1)}%`;
+
+                // No changes needed to the feature importance graph code
+                result.className = 'result ' + (predictionData.prediction === 'Approved' ? 'approved' : 'rejected');
+                result.style.display = 'block';
+
+                // Get feature importance data
+                const importanceResponse = await fetch('http://localhost:5000/feature_importance', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!importanceResponse.ok) {
+                    const errorData = await importanceResponse.json().catch(() => ({}));
+                    throw new Error(errorData.error || 'Failed to load feature importance data');
+                }
+
+                const importanceData = await importanceResponse.json();
+
+                // Draw feature importance graph
+                drawFeatureImportanceGraph(importanceData.features, importanceData.importances);
+
+            } catch (error) {
+                console.error('Error:', error);
+                errorText.textContent = error.message;
+                result.className = 'result error';
+                result.style.display = 'block';
+            } finally {
+                loading.style.display = 'none';
+                btn.disabled = false;
             }
-        </script>
-    </body>
-    
-    </html>
+        }
+
+        function drawFeatureImportanceGraph(features, importances) {
+            // Sort features by importance
+            const sortedIndices = importances
+                .map((val, idx) => [val, idx])
+                .sort(([a], [b]) => b - a)
+                .map(([, idx]) => idx);
+
+            const sortedFeatures = sortedIndices.map(i => features[i]);
+            const sortedImportances = sortedIndices.map(i => importances[i]);
+
+            const trace = {
+                x: sortedImportances,
+                y: sortedFeatures,
+                type: 'bar',
+                orientation: 'h',
+                marker: {
+                    color: '#3498db'
+                }
+            };
+
+            const layout = {
+                title: 'Factors Affecting Loan Approval',
+                xaxis: {
+                    title: 'Relative Importance (%)',
+                    range: [0, Math.max(...importances) * 1.1]
+                },
+                yaxis: {
+                    automargin: true
+                },
+                margin: {
+                    l: 150,
+                    r: 50,
+                    b: 50,
+                    t: 50,
+                    pad: 4
+                },
+                height: 500
+            };
+
+            Plotly.newPlot('featureImportanceGraph', [trace], layout);
+        }
+    </script>
+</body>
+
+</html>
